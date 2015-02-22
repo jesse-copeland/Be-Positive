@@ -47,16 +47,6 @@ BloodTransfusionRules = {
 
   receive_patient : function (blood_inventory, patient) {
     
-     // return patient.blood_type;
-    // give a random blood type to anyone
-    // very bad idea!
-    // return [BloodType
-    //   BloodType.AB_POS,
-    //   BloodType.AB_NEG,
-    //   BloodType.A_POS,
-    //   BloodType.A_NEG
-    // ][Math.floor(Math.random()*4)];
-
     var bloodArray = [];
 
     var reA = /^A_/;
@@ -99,15 +89,23 @@ BloodTransfusionRules = {
 
     }
 
-    console.log("patient:", pbt, "bloodArray:", bloodArray);
+    var mostBloodCount = 0;
+    var mostBloodType = '';
 
     for (var i = 0; i < bloodArray.length; i++) {
-      console.log("bloodArray check:", bloodArray[i]);
       if (blood_inventory[bloodArray[i]]) {
-        return bloodArray[i];
+        if (blood_inventory[bloodArray[i]] > mostBloodCount) {
+          mostBloodCount = blood_inventory[bloodArray[i]];
+          mostBloodType = bloodArray[i];
+        }
       }
     }
-    return false;
+    
+    if (mostBloodCount) {
+      return mostBloodType;
+    } else {
+      return false;
+    }
   }
 
 };
